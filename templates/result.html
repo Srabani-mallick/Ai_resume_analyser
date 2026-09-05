@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}Analysis Result{% endblock %}
+
+{% block content %}
+<h1>Analysis Result</h1>
+
+<div class="score-card">
+    <canvas id="scoreChart" width="200" height="200" data-score="{{ result.score }}"></canvas>
+    <p class="score-label">{{ result.score }}% ATS Match</p>
+</div>
+
+<div class="breakdown">
+    <div class="metric">
+        <span>Keyword Match</span>
+        <strong>{{ result.keyword_match_score }}%</strong>
+    </div>
+    <div class="metric">
+        <span>Formatting Score</span>
+        <strong>{{ result.formatting_score }}%</strong>
+    </div>
+</div>
+
+<div class="keywords-section">
+    <div class="matched">
+        <h3>Matched Keywords ({{ result.matched_keywords|length }})</h3>
+        <ul>
+            {% for kw in result.matched_keywords %}
+                <li>{{ kw }}</li>
+            {% else %}
+                <li class="muted">None matched</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="missing">
+        <h3>Missing Keywords ({{ result.missing_keywords|length }})</h3>
+        <ul>
+            {% for kw in result.missing_keywords %}
+                <li>{{ kw }}</li>
+            {% else %}
+                <li class="muted">None missing — great coverage</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<div class="suggestions-section">
+    <h3>Suggestions</h3>
+    <ul>
+        {% for s in result.suggestions %}
+            <li>{{ s }}</li>
+        {% endfor %}
+    </ul>
+</div>
+
+<a href="{{ url_for('upload') }}" class="btn-secondary">Analyze Another Resume</a>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script>
+    const ctx = document.getElementById('scoreChart');
+    const score = parseFloat(ctx.dataset.score);
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Score', 'Remaining'],
+            datasets: [{
+                data: [score, 100 - score],
+                backgroundColor: ['#4CAF50', '#e0e0e0'],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            cutout: '75%',
+            plugins: { legend: { display: false } }
+        }
+    });
+</script>
+{% endblock %}
