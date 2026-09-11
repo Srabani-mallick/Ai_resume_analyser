@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Upload & Analyze{% endblock %}
+
+{% block content %}
+<h1>Analyze Your Resume</h1>
+<p class="subtitle">Upload your resume and paste the job description to get an ATS compatibility score.</p>
+
+<form method="post" enctype="multipart/form-data" class="upload-form">
+    <div class="form-group">
+        <label for="resume_file">Upload Resume (PDF or DOCX)</label>
+        <input type="file" name="resume_file" id="resume_file" accept=".pdf,.docx">
+    </div>
+
+    <div class="form-group">
+        <label for="job_title">Job Title (optional)</label>
+        <input type="text" name="job_title" id="job_title">
+    </div>
+
+    <div class="form-group">
+        <label for="job_description">Paste Job Description</label>
+        <textarea name="job_description" id="job_description" rows="10" placeholder="Paste the job description here..."></textarea>
+    </div>
+
+    <button type="submit" class="btn-primary">Analyze Resume</button>
+</form>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Analysis History{% endblock %}
+
+{% block content %}
+<h1>Past Analyses</h1>
+
+<table class="history-table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Resume</th>
+            <th>Job Title</th>
+            <th>Score</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for result in results %}
+        <tr>
+            <td>{{ result.id }}</td>
+            <td>{{ result.resume.filename }}</td>
+            <td>{{ result.job_description.title or "—" }}</td>
+            <td><a href="{{ url_for('result', result_id=result.id) }}">{{ result.score }}%</a></td>
+            <td>{{ result.created_at.strftime('%d %b %Y, %H:%M') }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5" class="muted">No analyses yet.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
